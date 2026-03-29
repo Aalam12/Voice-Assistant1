@@ -1560,6 +1560,30 @@ class VoiceAssistantGUI(QMainWindow):
                     timeout=10
                 )
                 self.timers.remove(timer)
+    
+    def send_whatsapp_message(self, number, message):
+        try:
+            # number must be like: +919876543210
+            if not number.startswith("+"):
+                number = "+" + number
+
+            self.speak("Sending WhatsApp message")
+
+            # send instantly
+            pywhatkit.sendwhatmsg_instantly(
+                phone_no=number,
+                message=message,
+                wait_time=10,   # seconds before sending
+                tab_close=True,
+                close_time=3
+            )
+
+            return True
+
+        except Exception as e:
+            self.append_to_log(str(e), "Error")
+            self.speak("Failed to send WhatsApp message")
+            return False
 
     def process_command(self, command):
         """Main command processing method."""
@@ -1581,6 +1605,32 @@ class VoiceAssistantGUI(QMainWindow):
                 except Exception as e:
                     self.append_to_log(f"Plugin {plugin_name} error: {str(e)}", "Error")
                     return
+        
+        if "whatsapp" in command and "message" in command:
+            try:
+                # Example:
+                # send whatsapp message to 919876543210 hello how are you
+                words = command.split()
+
+                to_index = words.index("to")
+                number = words[to_index + 1]
+
+                if not number.isdigit():
+                    self.speak("Please say a valid phone number with country code")
+                    return
+
+                message = " ".join(words[to_index + 2:])
+
+                if not message:
+                    self.speak("What message should I send?")
+                    return
+
+                self.send_whatsapp_message(number, message)
+                return
+
+            except Exception:
+                self.speak("Please say the command properly")
+                return
 
         # File/folder commands
         file_cmd_match = re.match(
@@ -2020,12 +2070,12 @@ class VoiceAssistantGUI(QMainWindow):
                     )
         super().changeEvent(event)
 
-   
+    # ... [rest of the existing methods remain the same] ...
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     
-
+    # Ensure the application doesn't quit when last window is closed
     app.setQuitOnLastWindowClosed(False)
     
     assistant = VoiceAssistantGUI()
