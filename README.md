@@ -3,7 +3,7 @@
 A powerful Python-based desktop voice assistant with GUI, voice recognition, command processing, and system utilities — inspired by modern assistants like Alexa and Jarvis.
 
 ##  🚀 Features
-- **🎤 Voice command recognition (no wake word required)
+-  **🎤 Voice command recognition (no wake word required)
 - **🖥️ Modern GUI built with PyQt
 - **💬 Chat-style interaction panel
 - **📊 Usage statistics tracking
