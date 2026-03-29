@@ -2020,12 +2020,12 @@ class VoiceAssistantGUI(QMainWindow):
                     )
         super().changeEvent(event)
 
-    # ... [rest of the existing methods remain the same] ...
+   
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     
-    # Ensure the application doesn't quit when last window is closed
+
     app.setQuitOnLastWindowClosed(False)
     
     assistant = VoiceAssistantGUI()
